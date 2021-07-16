@@ -19,9 +19,9 @@ All three web servers are deployed into private subnets and not directly exposed
 
 # Prerequisites
 
-1. AWS Account
+1. AWS Account (and key pair)
 2. Terraform installed on your laptop. [Follow this guide on Terraform website.](https://www.terraform.io/downloads.html)
-3. Git
+3. [Git](https://git-scm.com/downloads)
 
 # Steps
 
@@ -30,22 +30,34 @@ All three web servers are deployed into private subnets and not directly exposed
 git clone https://github.com/jaydenaung/Terraform-AWS-TGW-Lab
 ```
 
+This will clone my git repo to your local directory.
+
 ## 2. Update variables
 
-In the Git directory:
+In the cloned repo directory:
 
 - Edit ```variables.tf``` and update the values accordingly.
 
+For example, change "yourkey" with your AWS SSH key pair that you should have created on AWS beforehand. 
+
+```bash
+variable "key_name" {
+  description = "SSH Key Pair"
+  default = "yourkey"
+}
+```
+
 ## 3. Execute the following commands
 
-In the git directory: 
+In the cloned repo directory: 
 
 Execute the following and check everything is in order.
 
 ```bash
 terraform plan
 ```
-And you can apply.
+If you're ok with the plan and it doesn't show any error, you can apply.
+
 ```bash
 echo yes | terraform apply
 ```
@@ -75,9 +87,9 @@ NAT_public_ip = 13.213.211.210
 
 ```
 
-## Observe the environment (Once Terraform is complete)
+## Observe Your AWS environment (Once Terraform is complete)
 
-If you take a look at your AWS environment at this point, you'll notice that the following AWS resources were created by Terraform automatically.
+If you take a look at your AWS environment at this point, you'll notice that the following AWS resources were created by Terraform automatically (Look at the AWS network diagram). 
 
 1. VPCs
 2. Subnets
@@ -132,10 +144,12 @@ You should see the website hosted on the webserver (Internal IP: 10.20.1.20) hos
 
 ![header image](img/spoke2.png)
 
-* Note: All Photos in the websites were taken by me, using an iPhone. They are photos of one of my most favorite cities on earth - **Edinburgh**!
+>> Note: All Photos shown on the websites were taken by me, using an iPhone. They are photos of one of my most favorite cities on earth - **Edinburgh**!
 
-# Test
-If you're feeling curious, you can do the following test besides accessing the websites.
+# Additional East-West Traffic Test
+If you're feeling adventurous, you can do the following test, besides accessing the websites. The NAT instance (linux firewall) is configured so that all traffic between VPCs goes through it.
+
+We can test this by accessing to an internal web server from an internal webserver.
 
 1. Log in to the NAT Instance via SSH, using the key pair you've described in the variables.tf. 
 
@@ -152,7 +166,7 @@ ssh 10.20.1.10 -i yourkey
 
 SSH traffic should be routed via the NAT instance, and you should be able to SSH to any of the internal web server from any internal instance in this lab.
 
-# Clean up
+# Clean-up
 Once you're satisfied with your tests, and have finished enjoying my photos of Edinburgh, you can clean up the whole lab environment by simply executing the following command.
 
 ```bash
