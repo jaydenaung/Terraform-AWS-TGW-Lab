@@ -27,7 +27,7 @@ All three web servers are deployed into private subnets and not directly exposed
 
 ## 1. Clone the git repo
 ```bash
-git clone https://github.com/jaydenaung/AWS-TGW-Lab
+git clone https://github.com/jaydenaung/Terraform-AWS-TGW-Lab
 ```
 
 ## 2. Update variables
