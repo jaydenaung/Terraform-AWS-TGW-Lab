@@ -13,9 +13,31 @@ variable "region" {
 }
 data "aws_availability_zones" "azs" {
 }
-variable "edge_sg_vpc_cidr" {}
-variable "spoke_1_sg_vpc_cidr" {}
-variable "spoke_2_sg_vpc_cidr" {}
-variable "key_name" {}
-variable "ubuntu_20_ami_sg" {}
+
+
+variable "edge_sg_vpc_cidr" {
+  description = "Edge VPC CIDR"
+  default = "10.7.0.0/16"
+}
+
+variable "spoke_1_sg_vpc_cidr" {
+  description = "Spoke VPC 1 CIDR"
+  default = "10.10.0.0/16"
+}
+
+variable "spoke_2_sg_vpc_cidr" {
+  description = "Spoke VPC 2 CIDR"
+  default = "10.20.0.0/16"
+}
+
+variable "key_name" {
+  description = "SSH Key Pair"
+  default = "MyKeyPair"
+}
+
+variable "ubuntu_20_ami_sg" {
+  description = "Ubuntu AMI ID (Singapore)"
+  default = "ami-0d058fe428540cd89r"
+}
+
 
