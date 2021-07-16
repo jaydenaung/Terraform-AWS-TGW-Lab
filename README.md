@@ -36,7 +36,7 @@ This will clone my git repo to your local directory.
 
 In the cloned repo directory:
 
-- Edit ```variables.tf``` and update the values accordingly.
+- Edit [variables.tf](variables.tf) and update the values accordingly.
 
 For example, change "yourkey" with your AWS SSH key pair that you should have created on AWS beforehand. 
 
