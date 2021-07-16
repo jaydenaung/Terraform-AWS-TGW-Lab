@@ -1,3 +1,5 @@
+# Update the variables according to your requirement!
+
 variable "project_name" {
   description = "Project Name - will prefex all generated AWS resource names"
   default     = "tgwlab"
@@ -13,7 +15,6 @@ variable "region" {
 }
 data "aws_availability_zones" "azs" {
 }
-
 
 variable "edge_sg_vpc_cidr" {
   description = "Edge VPC CIDR"
@@ -32,12 +33,12 @@ variable "spoke_2_sg_vpc_cidr" {
 
 variable "key_name" {
   description = "SSH Key Pair"
-  default = "MyKeyPair"
+  default = "yourkey"
 }
 
 variable "ubuntu_20_ami_sg" {
   description = "Ubuntu AMI ID (Singapore)"
-  default = "ami-0d058fe428540cd89r"
+  default = "ami-0d058fe428540cd89"
 }
 
 
