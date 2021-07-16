@@ -76,7 +76,7 @@ resource "aws_route_table" "edge_internal_rt" {
   vpc_id = aws_vpc.edge_sg_vpc.id
 }
 
-# Create Default route - Route is setup outside of Internal Route table block to prevent issues with diff
+# Create Default route
 resource "aws_route" "defaultroute" {
   route_table_id         = aws_route_table.edge_internal_rt.id
   destination_cidr_block = "0.0.0.0/0"
