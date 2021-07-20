@@ -86,10 +86,11 @@ Outputs:
 NAT_public_ip = 13.213.211.210
 
 ```
+Once you see the output, the terraform automation has been compeleted.
 
-## Observe Your AWS environment (Once Terraform is complete)
+## 4. Observe Your AWS environment (Once Terraform is complete)
 
-If you take a look at your AWS environment at this point, you'll notice that the following AWS resources were created by Terraform automatically (Look at the AWS network diagram). 
+If you take a look at your AWS environment at this point, you'll notice that the following AWS resources have been created by Terraform automatically (Look at the AWS network diagram). 
 
 1. VPCs
 2. Subnets
@@ -104,52 +105,54 @@ If you take a look at your AWS environment at this point, you'll notice that the
 
 >> You will also notice that all VPCS are connected to each other via the transit gateway, and all traffic (east-west and north-south) between VPCs wiill be routed via the NAT instance (linux firewall).
 
-## Access web servers in VPCs
+# 5. Access web servers in VPCs
 
 From the previous state, take note of the NAT instance's public IP  - **"NAT_public_ip"**. For me, it's ***13.213.211.210***. It'll be different in your case.
 
+The NAT instance is pre-configured so that all web servers sitting on internal subnets are exposed to the Internet via NAT instance's elastic IP (Public IP).
+
 ## Access Web server in Edge VPC
-Go to your browser, and access to the NAT instance's public IP on port 80.
+NAT instance is listening on port 80, and configured to NAT (forward) the traffic on port 80 to the web server in the ***edge VPC***. To access the website, go to your browser, and access to the NAT instance's public IP on port 80.
 
 ```
 http://13.213.211.210 
 ```
 
-You should see the website hosted on the webserver (IP: 10.5.7.20) hosted on the private subnet of the Edge VPC.
+You should be able to access the website hosted on the webserver (IP: 10.5.7.20) which is on the private subnet of the Edge VPC.
 
 ![header image](img/edge.png)
 
 
 ## Access Web server in Spoke VPC 1
 
-Go to your browser, and access to the NAT instance's public IP on port 8081.
+NAT instance is listening on port 8081, and configured to NAT (forward) the traffic on port 8081 to the web server in the ***spoke VPC 1***. To access the website, go to your browser, and access to the NAT instance's public IP on port 8081.
 
 ```
 http://13.213.211.210:8081 
 ```
 
-You should see the website hosted on the webserver (Internal IP: 10.10.1.20) hosted on the private subnet of the Edge VPC. Take note that the internal web server in spoke VPC is exposed via the NAT instance in edge VPC.
+You should see the website hosted on the webserver (Internal IP: 10.10.1.20) which is on the private subnet of the ***Spoke VPC 1***. Take note that the internal web server in spoke VPC is exposed via the NAT instance in edge VPC.
 
 ![header image](img/spoke1.png)
 
 ## Access Web server in Spoke VPC 2
 
-Go to your browser, and access to the NAT instance's public IP on port 8082.
+NAT instance is listening on port 8082, and configured to NAT (forward) the traffic on port 8082 to the web server in the ***spoke VPC 2***. To access the website, go to your browser, and access to the NAT instance's public IP on port 8082.
 
 ```
 http://13.213.211.210:8082
 ```
 
-You should see the website hosted on the webserver (Internal IP: 10.20.1.20) hosted on the private subnet of the Edge VPC. Take note that the internal web server in spoke VPC is exposed via the NAT instance in edge VPC.
+You should see the website hosted on the webserver (Internal IP: 10.20.1.20) which is on the private subnet of the ***Spoke VPC 2***. Take note that the internal web server in spoke VPC is exposed via the NAT instance in edge VPC.
 
 ![header image](img/spoke2.png)
 
 >> Note: All Photos shown on the websites were taken by me, using an iPhone. They are photos of one of my most favorite cities on earth - **Edinburgh**!
 
 # Additional East-West Traffic Test
-If you're feeling adventurous, you can do the following test, besides accessing the websites. The NAT instance (linux firewall) is configured so that all traffic between VPCs goes through it.
+If you're feeling adventurous, you can do the following test, besides accessing the websites on different VPCs. The NAT instance (linux firewall) is pre-configured so that all traffic between VPCs (east-west traffic) goes through it.
 
-We can test this by accessing to an internal web server from an internal webserver.
+We can test the east-west traffic by accessing to an internal web server from an internal webserver.
 
 1. Log in to the NAT Instance via SSH, using the key pair you've described in the variables.tf. 
 
