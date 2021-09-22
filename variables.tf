@@ -7,7 +7,7 @@ variable "project_name" {
 provider "aws" {
   profile = "default"
   region  = var.region
-  version = "~> 2.61.0"
+  version = "~> 3.59.0"
 }
 
 variable "region" {
