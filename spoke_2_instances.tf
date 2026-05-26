@@ -20,9 +20,9 @@ resource "aws_security_group" "spoke_2_web_sg" {
   }
 
   ingress {
-    from_port       = 22
-    to_port         = 22
-    protocol        = "TCP"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "TCP"
     cidr_blocks = ["10.0.0.0/8"]
   }
 
@@ -37,7 +37,7 @@ resource "aws_security_group" "spoke_2_web_sg" {
 
 # Create Ubuntu Instance on a private subnet
 resource "aws_instance" "spoke2_web1" {
-  ami                         = var.ubuntu_20_ami_sg
+  ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t2.nano"
   private_ip                  = "10.20.1.20"
   subnet_id                   = aws_subnet.spoke_2_prv_subnet_1a.id

@@ -30,7 +30,7 @@ resource "aws_subnet" "spoke_1_prv_subnet_1c" {
 
 # Attach  TGW to Spoke 1
 resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_attach_spoke1" {
-  subnet_ids         = [aws_subnet.spoke_1_prv_subnet_1a.id, aws_subnet.spoke_1_prv_subnet_1c.id ]
+  subnet_ids         = [aws_subnet.spoke_1_prv_subnet_1a.id, aws_subnet.spoke_1_prv_subnet_1c.id]
   transit_gateway_id = aws_ec2_transit_gateway.demo_tgw.id
   vpc_id             = aws_vpc.spoke_1_sg_vpc.id
 }
@@ -50,7 +50,7 @@ resource "aws_route" "vpc1_edge_tgw_access" {
   route_table_id         = aws_route_table.spoke_1_prv_rt.id
   destination_cidr_block = "10.0.0.0/8"
   transit_gateway_id     = aws_ec2_transit_gateway.demo_tgw.id
-  }
+}
 
 # Route Table Associations
 resource "aws_route_table_association" "spoke_1_prv_sub_1a_association" {

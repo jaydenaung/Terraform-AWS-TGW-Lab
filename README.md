@@ -19,9 +19,12 @@ All three web servers are deployed into private subnets and not directly exposed
 
 # Prerequisites
 
-1. AWS Account (and key pair)
-2. Terraform installed on your laptop. [Follow this guide on Terraform website.](https://www.terraform.io/downloads.html)
-3. [Git](https://git-scm.com/downloads)
+1. AWS Account, with credentials configured locally (`aws configure` or env vars).
+2. An EC2 SSH key pair pre-created in the target region (default `ap-southeast-1`).
+3. Terraform **>= 1.5** installed. [Follow this guide on Terraform website.](https://developer.hashicorp.com/terraform/install)
+4. [Git](https://git-scm.com/downloads)
+
+> This lab targets the AWS provider **v5.x** and pulls the latest **Ubuntu 22.04 LTS** AMI dynamically via the `aws_ami` data source, so it stays valid as Canonical re-publishes images.
 
 # Steps
 
@@ -49,17 +52,24 @@ variable "key_name" {
 
 ## 3. Execute the following commands
 
-In the cloned repo directory: 
+In the cloned repo directory:
 
-Execute the following and check everything is in order.
+First, initialize the working directory (downloads the AWS provider):
+
+```bash
+terraform init
+```
+
+Then preview what will be created:
 
 ```bash
 terraform plan
 ```
+
 If you're ok with the plan and it doesn't show any error, you can apply.
 
 ```bash
-echo yes | terraform apply
+terraform apply -auto-approve
 ```
 You will see the output from Terraform similar to the excerpt below:
 
@@ -173,8 +183,12 @@ SSH traffic should be routed via the NAT instance, and you should be able to SSH
 Once you're satisfied with your tests, and have finished enjoying my photos of Edinburgh, you can clean up the whole lab environment by simply executing the following command.
 
 ```bash
-echo yes | terraform destroy
+terraform destroy -auto-approve
 ```
+
+# Security note
+
+The NAT instance's security group in this lab is intentionally permissive (all ports / all sources) so that east-west traffic between spoke VPCs can be demonstrated without fiddling with ports. **Do not use these security group rules in any non-throwaway environment** — at minimum, restrict SSH (port 22) ingress to your own IP before applying.
 
 Happy Terraform-ing!
 

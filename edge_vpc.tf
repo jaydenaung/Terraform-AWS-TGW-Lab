@@ -46,7 +46,7 @@ resource "aws_subnet" "edge_web_subnet_1a" {
 
 # Attach  TGW to Edge VPC
 resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_attach_edge" {
-  subnet_ids         = [aws_subnet.edge_internal_subnet_1a.id ]
+  subnet_ids         = [aws_subnet.edge_internal_subnet_1a.id]
   transit_gateway_id = aws_ec2_transit_gateway.demo_tgw.id
   vpc_id             = aws_vpc.edge_sg_vpc.id
 }
@@ -95,7 +95,7 @@ resource "aws_route_table_association" "web_sub_association" {
 }
 
 resource "aws_route" "edge_vpcroutes" {
-    route_table_id = aws_route_table.edge_internal_rt.id
-    destination_cidr_block = "10.0.0.0/8"
-    transit_gateway_id     = aws_ec2_transit_gateway.demo_tgw.id
-   }
+  route_table_id         = aws_route_table.edge_internal_rt.id
+  destination_cidr_block = "10.0.0.0/8"
+  transit_gateway_id     = aws_ec2_transit_gateway.demo_tgw.id
+}

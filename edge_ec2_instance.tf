@@ -41,9 +41,9 @@ resource "aws_network_interface" "nat_nic2" {
   }
 }
 
-# Create Ubuntu  NAT Instance (Linux Firewall) to route north-south and east-west traffic 
+# Create Ubuntu  NAT Instance (Linux Firewall) to route north-south and east-west traffic
 resource "aws_instance" "vpc_edge_nat" {
-  ami           = var.ubuntu_20_ami_sg
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   key_name      = var.key_name
   user_data     = file("userdata-natgateway.sh")
@@ -62,7 +62,7 @@ resource "aws_instance" "vpc_edge_nat" {
 
 resource "aws_eip" "NAT_EIP" {
   network_interface = aws_network_interface.nat_nic1.id
-  vpc               = true
+  domain            = "vpc"
   depends_on        = [aws_internet_gateway.edge_vpc_igw]
 }
 
@@ -106,7 +106,7 @@ resource "aws_security_group" "edge_web_sg" {
 
 # Create Ubuntu web server on private subnet
 resource "aws_instance" "web1" {
-  ami                         = var.ubuntu_20_ami_sg
+  ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t2.nano"
   private_ip                  = "10.7.5.20"
   subnet_id                   = aws_subnet.edge_web_subnet_1a.id
